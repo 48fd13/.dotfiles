@@ -1,2 +1,1 @@
-# .dotfiles
-dotfiles
+# This repo stores the current versions of my config and dotfiles
