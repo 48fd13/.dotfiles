@@ -5,8 +5,10 @@ Standard home directory dotfiles layout with terminal workflow helpers.
 Files:
 - tmux/.tmux.conf
 - nvim/init.lua
+- nvim/lazy-lock.json
 - scripts/check-tools.sh
 - scripts/install-tools.sh
+- setup.sh
 
 Workflow tools checked by the scripts:
 - git, nvim, tmux
@@ -30,6 +32,22 @@ Leader groups include:
 Existing direct LSP mappings such as `gd`, `gr`, `K`, `Space rn`, and
 `Space ca` are kept.
 
+## Setup
+
+Run the setup script from the repo:
+
+```sh
+cd /path/to/dotfiles
+./setup.sh
+```
+
+The setup script:
+- installs/checks core tools where a supported package manager is available
+- backs up existing real config paths under `~/.dotfiles-backup/`
+- links `~/.config/nvim` to `<dotfiles>/nvim`
+- links `~/.tmux.conf` to `<dotfiles>/tmux/.tmux.conf`
+- bootstraps tmux TPM and Neovim lazy.nvim plugins when possible
+
 ## Tool checks and optional installs
 
 Check for expected workflow tools without installing anything:
@@ -48,5 +66,3 @@ The install helper detects `apt`, `dnf`, `pacman`, `zypper`, or `brew`, maps
 package names where they differ, prints the planned command, and asks for
 confirmation before running it. It is package-manager-neutral; Homebrew is
 supported when present but is not required or assumed.
-
-

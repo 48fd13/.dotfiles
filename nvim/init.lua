@@ -106,6 +106,7 @@ require("lazy").setup({
       local builtin = require("telescope.builtin")
       local ignored_dirs = {
         "%.git/",
+        "%.obsidian",
         "node_modules/",
         "%.cache/",
         "dist/",
