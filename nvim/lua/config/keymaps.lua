@@ -1,0 +1,15 @@
+local map = vim.keymap.set
+
+map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostics" })
+map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostics quickfix" })
+map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
+map("n", "<leader>bn", "<cmd>bnext<cr>", { desc = "Next buffer" })
+map("n", "<leader>bp", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+map("n", "<leader>wh", "<C-w>h", { desc = "Window left" })
+map("n", "<leader>wj", "<C-w>j", { desc = "Window down" })
+map("n", "<leader>wk", "<C-w>k", { desc = "Window up" })
+map("n", "<leader>wl", "<C-w>l", { desc = "Window right" })
+map("n", "<leader>ws", "<cmd>split<cr>", { desc = "Split window" })
+map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = "Vertical split" })
