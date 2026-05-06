@@ -188,7 +188,7 @@ fi
 
 if command -v nvim >/dev/null 2>&1; then
   info "Bootstrapping Neovim plugins"
-  nvim --headless '+Lazy! sync' +qa || warn "Neovim plugin bootstrap failed; open nvim once and run :Lazy sync"
+  nvim --headless -u "$HOME/.config/nvim/init.lua" '+lua require("lazy").sync({ wait = true })' +qa || warn "Neovim plugin bootstrap failed; open nvim once and run :Lazy sync"
 fi
 
 info "Done"
