@@ -102,9 +102,13 @@ package_for_command() {
     nvim:*) printf 'neovim' ;;
     git:*) printf 'git' ;;
     tmux:*) printf 'tmux' ;;
+    fzf:*) printf 'fzf' ;;
+    zoxide:*) printf 'zoxide' ;;
     rg:*) printf 'ripgrep' ;;
     fd:apt) printf 'fd-find' ;;
     fd:*) printf 'fd' ;;
+    lazygit:*) printf 'lazygit' ;;
+    delta:*) printf 'git-delta' ;;
     wl-copy:*) printf 'wl-clipboard' ;;
     xclip:*) printf 'xclip' ;;
     *) printf '%s' "$command_name" ;;
@@ -153,10 +157,14 @@ info "Using dotfiles from $DOTFILES_DIR"
 info "Detected OS: $OS"
 
 install_if_missing git
-install_if_missing tmux
 install_if_missing nvim
+install_if_missing tmux
+install_if_missing fzf
+install_if_missing zoxide
 install_if_missing rg
 install_if_missing fd
+install_if_missing lazygit
+install_if_missing delta
 install_clipboard_tool_if_needed
 
 link_path "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
