@@ -4,6 +4,7 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 OS="$(uname -s)"
+APT_UPDATED=0
 
 info() {
   printf '\033[1;34m==>\033[0m %s\n' "$1"
@@ -75,7 +76,7 @@ install_package() {
       brew install "$package_name"
       ;;
     apt)
-      sudo apt-get update
+      apt_update
       sudo apt-get install -y "$package_name"
       ;;
     dnf)
@@ -91,6 +92,56 @@ install_package() {
       return 1
       ;;
   esac
+}
+
+apt_update() {
+  if [ "$APT_UPDATED" -eq 0 ]; then
+    sudo apt-get update || return 1
+    APT_UPDATED=1
+  fi
+}
+
+apt_package_available() {
+  local package_name="$1"
+
+  if ! command -v apt-cache >/dev/null 2>&1; then
+    return 0
+  fi
+
+  apt_update || return 0
+  apt-cache show "$package_name" >/dev/null 2>&1
+}
+
+manual_install_hint() {
+  local command_name="$1"
+
+  case "$command_name" in
+    zoxide)
+      printf 'Older Ubuntu repositories may not package zoxide; use the official install instructions or a newer package source.'
+      ;;
+    lazygit)
+      printf 'Older Ubuntu repositories may not package lazygit; use the official release packages or a newer package source.'
+      ;;
+    delta)
+      printf 'Older Ubuntu repositories may not package git-delta; use the official delta release packages or a newer package source.'
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+warn_manual_install() {
+  local command_name="$1"
+  local package_name="$2"
+  local hint
+
+  hint="$(manual_install_hint "$command_name" || true)"
+  if [ -n "$hint" ]; then
+    warn "$command_name is not installed and apt package $package_name is unavailable. $hint"
+  else
+    warn "$command_name is not installed and apt package $package_name is unavailable. Install it manually."
+  fi
 }
 
 package_for_command() {
@@ -118,14 +169,18 @@ package_for_command() {
 install_if_missing() {
   local command_name="$1"
   local package_name
+  local package_manager
   package_name="$(package_for_command "$command_name")"
+  package_manager="$(detect_package_manager)"
 
   if command -v "$command_name" >/dev/null 2>&1; then
     info "$command_name already installed"
     return
   fi
 
-  if [ "$(detect_package_manager)" != "none" ]; then
+  if [ "$package_manager" = "apt" ] && ! apt_package_available "$package_name"; then
+    warn_manual_install "$command_name" "$package_name"
+  elif [ "$package_manager" != "none" ]; then
     info "Installing $package_name"
     install_package "$package_name" || warn "Failed to install $package_name. Install it manually."
   else
