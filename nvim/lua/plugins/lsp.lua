@@ -14,7 +14,7 @@ return {
     },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "pyright", "ruff" },
+        ensure_installed = { "pyright", "ruff", "marksman" },
       })
     end,
   },
@@ -36,6 +36,11 @@ return {
         capabilities = capabilities,
       })
       vim.lsp.enable("ruff")
+
+      vim.lsp.config("marksman", {
+        capabilities = capabilities,
+      })
+      vim.lsp.enable("marksman")
     end,
   },
 }

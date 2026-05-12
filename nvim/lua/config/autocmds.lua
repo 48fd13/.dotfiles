@@ -17,3 +17,35 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Code action" }))
   end,
 })
+
+local function bold_existing_highlights(groups)
+  for _, group in ipairs(groups) do
+    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group, link = false })
+    if ok and next(hl) then
+      hl.bold = true
+      vim.api.nvim_set_hl(0, group, hl)
+    end
+  end
+end
+
+local markdown_heading_groups = {
+  "markdownH1",
+  "markdownH2",
+  "markdownH3",
+  "markdownH4",
+  "markdownH5",
+  "markdownH6",
+  "@markup.heading.markdown",
+  "@markup.heading.1.markdown",
+  "@markup.heading.2.markdown",
+  "@markup.heading.3.markdown",
+  "@markup.heading.4.markdown",
+  "@markup.heading.5.markdown",
+  "@markup.heading.6.markdown",
+}
+
+vim.api.nvim_create_autocmd({ "VimEnter", "ColorScheme" }, {
+  callback = function()
+    bold_existing_highlights(markdown_heading_groups)
+  end,
+})
