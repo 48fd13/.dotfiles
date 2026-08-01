@@ -15,4 +15,9 @@ return {
       },
     },
   },
+  {
+    "https://github.com/OXY2DEV/markview.nvim.git",
+    ft = { "markdown", "quarto", "rmd" },
+    opts = {},
+  },
 }
