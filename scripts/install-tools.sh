@@ -56,6 +56,11 @@ package_for_tool() {
     lazygit:*) printf 'lazygit' ;;
     delta:brew) printf 'git-delta' ;;
     delta:*) printf 'git-delta' ;;
+    node:apt) printf 'nodejs' ;;
+    cc:apt) printf 'build-essential' ;;
+    cc:dnf) printf 'gcc' ;;
+    cc:pacman) printf 'base-devel' ;;
+    cc:zypper) printf 'gcc' ;;
     *) printf '%s' "$tool" ;;
   esac
 }
@@ -79,7 +84,14 @@ unique_append() {
 }
 
 manager="$(detect_package_manager)"
-tools="git nvim tmux fzf zoxide rg fd lazygit delta"
+tool_available() {
+  case "$1" in
+    fd) command -v fd >/dev/null 2>&1 || command -v fdfind >/dev/null 2>&1 ;;
+    *) command -v "$1" >/dev/null 2>&1 ;;
+  esac
+}
+
+tools="git nvim tmux fzf zoxide rg fd lazygit delta node npm unzip cc"
 packages=""
 
 if [ "$manager" = "none" ]; then
@@ -88,7 +100,7 @@ if [ "$manager" = "none" ]; then
 fi
 
 for tool in $tools; do
-  if command -v "$tool" >/dev/null 2>&1; then
+  if tool_available "$tool"; then
     printf 'ok      %s\n' "$tool"
   else
     package="$(package_for_tool "$tool" "$manager")"

@@ -47,32 +47,22 @@ return {
       map("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Open diff view" })
       map("n", "<leader>gD", "<cmd>DiffviewClose<cr>", { desc = "Close diff view" })
       map("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", { desc = "File history" })
+    end,
+  },
+
+  {
+    "https://github.com/kdheepak/lazygit.nvim.git",
+    dependencies = { "https://github.com/nvim-lua/plenary.nvim.git" },
+    config = function()
       map("n", "<leader>gg", function()
-        if vim.fn.executable("lazygit") ~= 1 then
-          vim.notify("lazygit is not installed", vim.log.levels.WARN)
-          return
+        -- Walk up from the current buffer's directory to find the nearest .git
+        local buf_path = vim.fn.expand("%:p:h")
+        local git_root = vim.fn.systemlist("git -C " .. vim.fn.shellescape(buf_path) .. " rev-parse --show-toplevel")[1]
+        if vim.v.shell_error == 0 and git_root and git_root ~= "" then
+          require("lazygit").lazygit(git_root)
+        else
+          require("lazygit").lazygit()
         end
-
-        local width = math.floor(vim.o.columns * 0.9)
-        local height = math.floor(vim.o.lines * 0.9)
-        local buf = vim.api.nvim_create_buf(false, true)
-        local win = vim.api.nvim_open_win(buf, true, {
-          relative = "editor",
-          width = width,
-          height = height,
-          row = math.floor((vim.o.lines - height) / 2),
-          col = math.floor((vim.o.columns - width) / 2),
-          border = "rounded",
-        })
-
-        vim.fn.termopen("lazygit", {
-          on_exit = function()
-            if vim.api.nvim_win_is_valid(win) then
-              vim.api.nvim_win_close(win, true)
-            end
-          end,
-        })
-        vim.cmd.startinsert()
       end, { desc = "LazyGit" })
     end,
   },

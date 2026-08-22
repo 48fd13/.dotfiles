@@ -16,6 +16,11 @@ return {
             enabled = true,
           },
           use_libuv_file_watcher = true,
+          window = {
+            mappings = {
+              ["P"] = { "toggle_preview", config = { use_float = true } },
+            },
+          },
         },
       })
 

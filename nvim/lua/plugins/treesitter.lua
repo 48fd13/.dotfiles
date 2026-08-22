@@ -1,19 +1,23 @@
 return {
   {
     "https://github.com/nvim-treesitter/nvim-treesitter.git",
+    branch = "master",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").setup({
-        install_dir = vim.fn.stdpath("data") .. "/site",
-      })
-      require("nvim-treesitter").install({ "bash", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" })
+      local parsers = { "bash", "lua", "markdown", "markdown_inline", "python", "query", "vim", "vimdoc" }
+      local compilers = { "cc", "gcc", "clang", "cl", "zig" }
+      local has_compiler = vim.iter(compilers):any(function(compiler)
+        return vim.fn.executable(compiler) == 1
+      end)
 
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "python" },
-        callback = function()
-          pcall(vim.treesitter.start)
-          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end,
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = has_compiler and parsers or {},
+        highlight = {
+          enable = true,
+        },
+        indent = {
+          enable = true,
+        },
       })
     end,
   },

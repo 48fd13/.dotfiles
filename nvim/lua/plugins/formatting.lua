@@ -2,21 +2,11 @@ local map = vim.keymap.set
 
 return {
   {
-    "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git",
-    dependencies = { "https://github.com/mason-org/mason.nvim.git" },
-    config = function()
-      require("mason-tool-installer").setup({
-        ensure_installed = { "black", "isort", "pyright", "ruff" },
-      })
-    end,
-  },
-
-  {
     "https://github.com/stevearc/conform.nvim.git",
     config = function()
       require("conform").setup({
         formatters_by_ft = {
-          python = { "isort", "black" },
+          python = { "ruff_organize_imports", "ruff_format" },
         },
         format_on_save = function(bufnr)
           if vim.bo[bufnr].filetype == "python" then

@@ -162,6 +162,11 @@ package_for_command() {
     delta:*) printf 'git-delta' ;;
     wl-copy:*) printf 'wl-clipboard' ;;
     xclip:*) printf 'xclip' ;;
+    node:apt) printf 'nodejs' ;;
+    cc:apt) printf 'build-essential' ;;
+    cc:dnf) printf 'gcc' ;;
+    cc:pacman) printf 'base-devel' ;;
+    cc:zypper) printf 'gcc' ;;
     *) printf '%s' "$command_name" ;;
   esac
 }
@@ -173,7 +178,7 @@ install_if_missing() {
   package_name="$(package_for_command "$command_name")"
   package_manager="$(detect_package_manager)"
 
-  if command -v "$command_name" >/dev/null 2>&1; then
+  if command_available "$command_name"; then
     info "$command_name already installed"
     return
   fi
@@ -186,6 +191,13 @@ install_if_missing() {
   else
     warn "$command_name is not installed. Install $package_name manually."
   fi
+}
+
+command_available() {
+  case "$1" in
+    fd) command -v fd >/dev/null 2>&1 || command -v fdfind >/dev/null 2>&1 ;;
+    *) command -v "$1" >/dev/null 2>&1 ;;
+  esac
 }
 
 install_clipboard_tool_if_needed() {
@@ -220,10 +232,15 @@ install_if_missing rg
 install_if_missing fd
 install_if_missing lazygit
 install_if_missing delta
+install_if_missing node
+install_if_missing npm
+install_if_missing unzip
+install_if_missing cc
 install_clipboard_tool_if_needed
 
 link_path "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 link_path "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+link_path "$DOTFILES_DIR/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
 
 if command -v git >/dev/null 2>&1; then
   if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
