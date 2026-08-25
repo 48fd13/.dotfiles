@@ -13,3 +13,6 @@ map("n", "<leader>wk", "<C-w>k", { desc = "Window up" })
 map("n", "<leader>wl", "<C-w>l", { desc = "Window right" })
 map("n", "<leader>ws", "<cmd>split<cr>", { desc = "Split window" })
 map("n", "<leader>wv", "<cmd>vsplit<cr>", { desc = "Vertical split" })
+
+-- ThePrimeagen-style project view: netrw at the current file's directory
+map("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view (netrw)" })

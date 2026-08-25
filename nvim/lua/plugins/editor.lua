@@ -17,8 +17,55 @@ return {
           },
           use_libuv_file_watcher = true,
           window = {
+            width = 30,
             mappings = {
               ["P"] = { "toggle_preview", config = { use_float = true } },
+              ["<"] = function(state)
+                local win = state.winid
+                vim.api.nvim_win_set_width(win, vim.api.nvim_win_get_width(win) - 5)
+              end,
+              [">"] = function(state)
+                local win = state.winid
+                vim.api.nvim_win_set_width(win, vim.api.nvim_win_get_width(win) + 5)
+              end,
+            },
+          },
+        },
+        default_component_configs = {
+          indent = {
+            with_expanders = true,
+          },
+        },
+        renderers = {
+          directory = {
+            { "indent" },
+            { "icon" },
+            { "current_filter" },
+            {
+              "container",
+              content = {
+                { "name", zindex = 10 },
+                { "symlink_target", zindex = 10, highlight = "NeoTreeSymbolicLinkTarget" },
+                { "clipboard", zindex = 10 },
+                { "diagnostics", errors_only = true, zindex = 20, align = "right", hide_when_expanded = true },
+                { "git_status", zindex = 10, align = "right", hide_when_expanded = true },
+              },
+            },
+          },
+          file = {
+            { "indent" },
+            { "icon" },
+            {
+              "container",
+              content = {
+                { "name", zindex = 10 },
+                { "symlink_target", zindex = 10, highlight = "NeoTreeSymbolicLinkTarget" },
+                { "clipboard", zindex = 10 },
+                { "bufnr", zindex = 10 },
+                { "modified", zindex = 20, align = "right" },
+                { "diagnostics", zindex = 20, align = "right" },
+                { "git_status", zindex = 10, align = "right" },
+              },
             },
           },
         },

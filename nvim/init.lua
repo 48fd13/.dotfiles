@@ -8,4 +8,6 @@ end
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.mermaid")
+require("config.markdown_links")
 require("config.lazy")

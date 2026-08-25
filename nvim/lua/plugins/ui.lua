@@ -11,7 +11,6 @@ return {
       spec = {
         { "<leader>b", group = "buffers" },
         { "<leader>c", group = "code/lsp" },
-        { "<leader>e", desc = "Explorer" },
         { "<leader>f", group = "files/search" },
         { "<leader>g", group = "git" },
         { "<leader>h", group = "harpoon" },
@@ -22,7 +21,8 @@ return {
   },
   {
     "https://github.com/OXY2DEV/markview.nvim.git",
-    ft = { "markdown", "quarto", "rmd" },
+    lazy = false,
+    priority = 900,
     opts = {},
   },
   {
@@ -32,27 +32,6 @@ return {
     config = function()
       vim.opt.background = "dark"
       vim.cmd.colorscheme("oxocarbon")
-    end,
-  },
-  {
-    "https://github.com/akinsho/bufferline.nvim.git",
-    version = "*",
-    dependencies = { "https://github.com/nvim-tree/nvim-web-devicons.git" },
-    event = "VeryLazy",
-    config = function()
-      require("bufferline").setup({
-        options = {
-          diagnostics = "nvim_lsp",
-          offsets = {
-            { filetype = "neo-tree", text = "Explorer", highlight = "Directory", text_align = "left" },
-          },
-        },
-      })
-
-      local map = vim.keymap.set
-      map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer tab" })
-      map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer tab" })
-      map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", { desc = "Close other buffers" })
     end,
   },
   {
