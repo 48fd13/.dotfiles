@@ -7,16 +7,16 @@ return {
       require("conform").setup({
         formatters_by_ft = {
           python = { "ruff_organize_imports", "ruff_format" },
+          toml = { "taplo" },
         },
-        format_on_save = function(bufnr)
-          if vim.bo[bufnr].filetype == "python" then
-            return { lsp_fallback = true, timeout_ms = 3000 }
-          end
-        end,
+        format_on_save = {
+          timeout_ms = 5000,
+          lsp_format = "fallback",
+        },
       })
 
       map("n", "<leader>fm", function()
-        require("conform").format({ async = true, lsp_fallback = true })
+        require("conform").format({ async = true, lsp_format = "fallback" })
       end, { desc = "Format" })
     end,
   },
