@@ -49,3 +49,16 @@ vim.api.nvim_create_autocmd({ "VimEnter", "ColorScheme" }, {
     bold_existing_highlights(markdown_heading_groups)
   end,
 })
+
+-- A tmux pane zoom changes Neovim's window dimensions. Redraw Markview after
+-- that resize so Markdown tables use the newly available width.
+vim.api.nvim_create_autocmd("VimResized", {
+  callback = function()
+    vim.schedule(function()
+      if vim.fn.exists(":Markview") == 2 then
+        vim.cmd("Markview Clear")
+        vim.cmd("Markview Render")
+      end
+    end)
+  end,
+})
