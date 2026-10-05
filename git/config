@@ -1,0 +1,44 @@
+# Shared git settings. Linked to ~/.config/git/config by setup.sh.
+# Put your identity in ~/.gitconfig (or run `git config --global user.name ...`);
+# that file is read after this one, so it also overrides anything here.
+
+[init]
+	defaultBranch = main
+
+[core]
+	pager = delta
+	editor = nvim
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	line-numbers = true
+
+[pull]
+	rebase = false
+
+[rebase]
+	autoStash = true
+	autoSquash = true
+
+[push]
+	default = simple
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+[merge]
+	conflictStyle = zdiff3
+
+[diff]
+	algorithm = histogram
+	colorMoved = default
+
+[rerere]
+	enabled = true
+
+[branch]
+	sort = -committerdate

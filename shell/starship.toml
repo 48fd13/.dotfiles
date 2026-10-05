@@ -1,0 +1,69 @@
+# Monochrome starship prompt. Docs: https://starship.rs/config/
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+command_timeout = 500
+
+format = """
+$username$hostname$directory$git_branch$git_status$python$nodejs$rust$golang$lua$cmd_duration
+$character"""
+
+[character]
+success_symbol = "[❯](bold #f2f4f8)"
+error_symbol = "[❯](bold #fa4d56)"
+vimcmd_symbol = "[❮](bold #a2a9b0)"
+
+[directory]
+style = "bold #dde1e6"
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " 󰌾"
+
+[git_branch]
+symbol = " "
+style = "#a2a9b0"
+format = "[on $symbol$branch]($style) "
+
+[git_status]
+style = "#787f87"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+
+[cmd_duration]
+min_time = 2000
+style = "#787f87"
+format = "[took $duration]($style) "
+
+[username]
+style_user = "#a2a9b0"
+format = "[$user]($style)"
+show_always = false
+
+[hostname]
+ssh_only = true
+style = "#a2a9b0"
+format = "[@$hostname]($style) "
+
+[python]
+symbol = " "
+style = "#787f87"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = " "
+style = "#787f87"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = " "
+style = "#787f87"
+format = "[$symbol$version]($style) "
+
+[golang]
+symbol = " "
+style = "#787f87"
+format = "[$symbol$version]($style) "
+
+[lua]
+symbol = " "
+style = "#787f87"
+format = "[$symbol$version]($style) "

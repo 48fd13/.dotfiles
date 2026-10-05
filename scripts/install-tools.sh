@@ -54,6 +54,7 @@ package_for_tool() {
     fd:apt) printf 'fd-find' ;;
     fd:*) printf 'fd' ;;
     lazygit:*) printf 'lazygit' ;;
+    bat:*) printf 'bat' ;;
     delta:brew) printf 'git-delta' ;;
     delta:*) printf 'git-delta' ;;
     node:apt) printf 'nodejs' ;;
@@ -87,12 +88,28 @@ manager="$(detect_package_manager)"
 tool_available() {
   case "$1" in
     fd) command -v fd >/dev/null 2>&1 || command -v fdfind >/dev/null 2>&1 ;;
+    bat) command -v bat >/dev/null 2>&1 || command -v batcat >/dev/null 2>&1 ;;
     *) command -v "$1" >/dev/null 2>&1 ;;
   esac
 }
 
-tools="git nvim tmux fzf zoxide rg fd lazygit delta node npm unzip cc"
+version_at_least() {
+  current="$1"
+  required="$2"
+  awk -v current="$current" -v required="$required" 'BEGIN {
+    split(current, c, "\\.")
+    split(required, r, "\\.")
+    for (i = 1; i <= 3; i++) {
+      if ((c[i] + 0) > (r[i] + 0)) exit 0
+      if ((c[i] + 0) < (r[i] + 0)) exit 1
+    }
+    exit 0
+  }'
+}
+
+tools="git nvim tmux fzf zoxide rg fd lazygit delta bat tree jq node npm unzip cc curl"
 packages=""
+outdated_nvim=0
 
 if [ "$manager" = "none" ]; then
   printf 'No supported package manager detected. Supported: apt, dnf, pacman, zypper, brew.\n' >&2
@@ -101,13 +118,28 @@ fi
 
 for tool in $tools; do
   if tool_available "$tool"; then
-    printf 'ok      %s\n' "$tool"
+    if [ "$tool" = "nvim" ]; then
+      version=$(nvim --version | awk 'NR == 1 { sub(/^v/, "", $2); print $2; exit }')
+      if version_at_least "$version" "0.12.0"; then
+        printf 'ok      %s (%s)\n' "$tool" "$version"
+      else
+        printf 'outdated %s (%s; requires >= 0.12.0)\n' "$tool" "$version"
+        outdated_nvim=1
+      fi
+    else
+      printf 'ok      %s\n' "$tool"
+    fi
   else
     package="$(package_for_tool "$tool" "$manager")"
     packages="$(unique_append "$package" "$packages")"
     printf 'missing %s -> %s\n' "$tool" "$package"
   fi
 done
+
+if [ -z "$packages" ] && [ "$outdated_nvim" -eq 1 ]; then
+  printf '\nNeovim must be updated from the official release; run setup.sh to install it under ~/.local/bin.\n'
+  exit 1
+fi
 
 if [ -z "$packages" ]; then
   printf 'All checked tools are already available.\n'

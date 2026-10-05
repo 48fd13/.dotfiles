@@ -23,15 +23,20 @@ return {
     "https://github.com/OXY2DEV/markview.nvim.git",
     lazy = false,
     priority = 900,
-    opts = {},
+    config = function()
+      local presets = require("markview.presets")
+      require("markview").setup({
+        markdown = { headings = presets.headings.marker },
+      })
+    end,
   },
   {
-    "https://github.com/nyoom-engineering/oxocarbon.nvim.git",
+    "https://github.com/edeneast/nightfox.nvim.git",
     lazy = false,
     priority = 1000,
     config = function()
       vim.opt.background = "dark"
-      vim.cmd.colorscheme("oxocarbon")
+      vim.cmd.colorscheme("carbonfox")
     end,
   },
   {
