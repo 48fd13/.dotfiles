@@ -17,10 +17,10 @@ vimcmd_symbol = "[❮](bold #a2a9b0)"
 style = "bold #dde1e6"
 truncation_length = 3
 truncation_symbol = "…/"
-read_only = " 󰌾"
+read_only = " (ro)"
 
 [git_branch]
-symbol = " "
+symbol = ""
 style = "#a2a9b0"
 format = "[on $symbol$branch]($style) "
 
@@ -44,26 +44,26 @@ style = "#a2a9b0"
 format = "[@$hostname]($style) "
 
 [python]
-symbol = " "
+symbol = "py "
 style = "#787f87"
 format = "[$symbol$version]($style) "
 
 [nodejs]
-symbol = " "
+symbol = "node "
 style = "#787f87"
 format = "[$symbol$version]($style) "
 
 [rust]
-symbol = " "
+symbol = "rs "
 style = "#787f87"
 format = "[$symbol$version]($style) "
 
 [golang]
-symbol = " "
+symbol = "go "
 style = "#787f87"
 format = "[$symbol$version]($style) "
 
 [lua]
-symbol = " "
+symbol = "lua "
 style = "#787f87"
 format = "[$symbol$version]($style) "

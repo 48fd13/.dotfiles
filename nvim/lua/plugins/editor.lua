@@ -34,12 +34,23 @@ return {
         default_component_configs = {
           indent = {
             with_expanders = true,
+            expander_collapsed = "+",
+            expander_expanded = "-",
           },
+          git_status = {
+            symbols = {
+              added = "A", modified = "M", deleted = "D", renamed = "R",
+              untracked = "?", ignored = "!", unstaged = "U", staged = "S", conflict = "C",
+            },
+          },
+          diagnostics = {
+            symbols = { error = "E", warn = "W", info = "I", hint = "H" },
+          },
+          modified = { symbol = "[+]" },
         },
         renderers = {
           directory = {
             { "indent" },
-            { "icon" },
             { "current_filter" },
             {
               "container",
@@ -54,7 +65,6 @@ return {
           },
           file = {
             { "indent" },
-            { "icon" },
             {
               "container",
               content = {

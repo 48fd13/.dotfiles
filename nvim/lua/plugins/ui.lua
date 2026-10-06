@@ -25,8 +25,20 @@ return {
     priority = 900,
     config = function()
       local presets = require("markview.presets")
+      local headings = vim.deepcopy(presets.headings.marker)
+      for _, heading in pairs(headings) do
+        if type(heading) == "table" then
+          heading.sign = ""
+        end
+      end
       require("markview").setup({
-        markdown = { headings = presets.headings.marker },
+        markdown = { headings = headings },
+        markdown_inline = {
+          checkboxes = {
+            checked = { text = "[x]" },
+            unchecked = { text = "[ ]" },
+          },
+        },
       })
     end,
   },
