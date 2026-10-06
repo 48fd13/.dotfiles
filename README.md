@@ -146,8 +146,11 @@ Shared defaults, no identity. `delta` is the pager. Notable settings:
 
 Plugins are managed by `lazy.nvim`. The colorscheme is plain `carbonfox`
 (nightfox.nvim) with no custom color overrides. Markdown is rendered by
-`markview.nvim` with its `marker` heading preset. Press `Space` (the leader
-key) to open `which-key.nvim` and discover shortcut groups.
+`markview.nvim` with its `marker` heading preset. The config is icon-free, so
+it renders in any font: Neo-tree and fzf-lua show no file icons (expanders are
+`+`/`-`, git status and diagnostics are letters), and markview has no heading
+sign glyphs and uses `[x]`/`[ ]` checkboxes. Press `Space` (the leader key) to
+open `which-key.nvim` and discover shortcut groups.
 
 Leader groups:
 - `Space f`: files/search (`ff` find files, `fg` live grep, `fb` buffers, `fr` recent files)
@@ -184,8 +187,9 @@ it. Homebrew is supported but not required. `yq` and `starship` are installed by
 
 ## Notes
 
-- Neo-tree, markview and starship use Nerd Font glyphs; the terminal needs a
-  Nerd Font to show them.
-- `setup-remote.sh` and the shell file are the parts to reuse on machines
-  without a Nerd Font or root: the prompt symbols are the only font-dependent
-  piece there.
+- No Nerd Font is needed: the starship prompt, Neo-tree, fzf-lua and the
+  checkboxes and headings in markview use plain text and standard Unicode (`❯`,
+  `█`). Two markview details can still draw Nerd Font glyphs: callout icons
+  (`> [!NOTE]`) and code-block language labels.
+- Fonts are drawn by the terminal on the machine you sit at, never by a remote
+  VM, so `setup-remote.sh` needs no font on the VM either way.
