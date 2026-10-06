@@ -2,13 +2,32 @@
 
 Standard home directory dotfiles layout with terminal workflow helpers.
 
+Setup scripts:
+- `./setup.sh`: full workstation setup (nvim, lazygit, delta, node, tmux plugins, prompt, shell, git config).
+- `./setup-remote.sh`: lightweight setup for quick jobs on remote VMs. Needs no root, git or tmux: fzf, ripgrep, jq, zoxide and starship are downloaded as prebuilt binaries into `~/.local/bin`, and the shell config and prompt are linked. Needs only `curl` and outbound HTTPS.
+- `scripts/lib.sh`: helpers shared by both scripts.
+
+On a remote VM (no git needed), copy the three pieces the script uses and run it:
+
+```sh
+rsync -a --relative setup-remote.sh scripts/lib.sh shell/ user@host:.dotfiles/
+ssh user@host '~/.dotfiles/setup-remote.sh'
+```
+
+Git identity for the workstation setup is not stored in the repo; set it per machine:
+`git config --global user.name "..."` and `git config --global user.email "..."`.
+
 Files:
 - tmux/.tmux.conf
 - nvim/init.lua
 - nvim/lazy-lock.json
+- shell/shell.sh, shell/starship.toml
+- git/config
 - scripts/check-tools.sh
 - scripts/install-tools.sh
+- scripts/lib.sh
 - setup.sh
+- setup-remote.sh
 
 Workflow tools checked by the scripts:
 - git, nvim, tmux
